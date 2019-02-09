@@ -3,6 +3,9 @@ import UserView from "../containers/UserView";
 import AlbumView from "../containers/AlbumView";
 import PostView from "../containers/PostView";
 import PhotoView from "../containers/PhotoView";
+import PhotosView from "../containers/PhotosView";
+import AlbumsView from "../containers/AlbumsView";
+import PostsView from "../containers/PostsView";
 
 export const routes = [
     {
@@ -17,13 +20,28 @@ export const routes = [
     },
     {
         exact: true,
+        path: "/posts",
+        component: PostsView
+    },
+    {
+        exact: true,
         path: "/posts/:id",
         component: PostView
     },
     {
         exact: true,
+        path: "/albums",
+        component: AlbumsView
+    },
+    {
+        exact: true,
         path: "/albums/:id",
         component: AlbumView
+    },
+    {
+        exact: true,
+        path: "/photos",
+        component: PhotosView
     },
     {
         exact: true,
