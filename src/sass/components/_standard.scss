@@ -34,6 +34,9 @@ body {
   @include breakpoint(1200px) {
       width: 1140px;
   }
+  &.view {
+    padding: 40px 0 25px;
+  }
 }
 
 a {
