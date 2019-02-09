@@ -37,6 +37,13 @@ body {
   &.view {
     padding: 40px 0 25px;
   }
+  &__small {
+    @include breakpoint (768px){
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+  }
 }
 
 a {
