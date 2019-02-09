@@ -1,0 +1,24 @@
+.nav {
+    text-align: center;
+    padding: 10px 0;
+    background: $electronBlue;
+    &__brand {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        color: $white;
+        font-family: $ptSerif;
+        font-size: 36px;
+        font-weight: 700;
+    }
+    &__item {
+        display: inline-block;
+        a {
+            display: block;
+            padding: 10px 5px;
+            color: $white;
+            &:hover {
+                color: $greenDarnerTail;
+            }
+        }
+    }
+}
