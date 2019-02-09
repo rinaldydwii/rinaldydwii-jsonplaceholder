@@ -40,7 +40,7 @@ class UserView extends Component {
         const { user, loading, finish, error } = this.state
         return (
             <Container>
-                <article className="profile">
+                <div className="profile">
                     <header>
                         <h1 className="text-center">{user.name}</h1>
                         <div className="profile__information text-center">
@@ -51,7 +51,7 @@ class UserView extends Component {
                     <ProfileSection user={user} />
                     <PostsSection posts={user.posts} />
                     <AlbumsSection albums={user.albums} />
-                </article>
+                </div>
             </Container>
         );
     }
