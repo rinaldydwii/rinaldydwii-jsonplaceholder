@@ -1,13 +1,13 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import UsersView from './containers/UsersView';
+import React, { Fragment } from 'react';
+import Router from './routes';
+import { Footer, Navbar } from './components';
 
 const App = () => (
-  <Router>
-    <Switch>
-      <Route exact path="/users" component={UsersView} />
-    </Switch>
-  </Router>
+  <Fragment>
+    <Navbar />
+    <Router />
+    <Footer />
+  </Fragment>
 )
 
 export default App;
