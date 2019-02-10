@@ -24,7 +24,12 @@ class UsersView extends Component {
     render() {
         return (
             <Container>
-                <UsersSection users={this.state.users} />
+                <UsersSection 
+                    users={this.state.users}
+                    loading={this.state.loading}
+                    finish={this.state.finish}
+                    error={this.state.error}
+                />
             </Container>
         );
     }
