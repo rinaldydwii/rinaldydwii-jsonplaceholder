@@ -1,56 +1,82 @@
 import React, { Component } from "react";
-import { Header, Divider, List } from "semantic-ui-react"
-import { ProfileSection, PostsSection, AlbumsSection, Container } from "../components";
+import { ProfileSection, PostsSection, AlbumsSection, Container, Loading } from "../components";
 
 class UserView extends Component {
     constructor() {
         super()
         this.state = {
             user: {},
-            loading: false,
-            finish: false,
-            error: ""
+            posts: [],
+            albums: [],
+            loadingUser: false,
+            finishUser: false,
+            errorUser: "",
+            loadingPosts: false,
+            finishPosts: false,
+            errorPosts: "",
+            loadingAlbums: false,
+            finishAlbums: false,
+            errorAlbums: ""
         }
     }
     loadUser = async() => {
-        await fetch(`https://jsonplaceholder.typicode.com/users/${this.props.match.params.id}`)
+        this.setState({loadingUser: true})
+        fetch(`https://jsonplaceholder.typicode.com/users/${this.props.match.params.id}`)
             .then(res => res.json())
-            .then(user => this.setState({user}))
-            .catch(error => this.setState({error, finish: true, loading: false}))
+            .then(user => this.setState({user, finishUser: true, loadingUser: false}))
+            .catch(errorUser => this.setState({errorUser, finishUser: true, loadingUser: false}))
     }
     loadPosts = async() => {
-        await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}`)
+        this.setState({loadingPosts: true})
+        fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}`)
         .then(res => res.json())
-            .then(posts => this.setState(prevState => ({user: {...prevState.user, posts}})))
-            .catch(error => this.setState({error, finish: true, loading: false}))
+            .then(posts => this.setState({posts, finishPosts: true, loadingPosts: false}))
+            .catch(errorPosts => this.setState({errorPosts, finishPosts: true, loadingPosts: false}))
     }
     loadAlbums = async() => {
-        await fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}`)
+        this.setState({loadingAlbums: true})
+        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}`)
         .then(res => res.json())
-            .then(albums => this.setState(prevState => ({user: {...prevState.user, albums}, loading: false, finish: true})))
-            .catch(error => this.setState({error, finish: true, loading: false}))
+            .then(albums => this.setState({albums, loadingAlbums: false, finishAlbums: true}))
+            .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
     }
-    async componentDidMount() {
-        this.setState({loading: true})
-        await this.loadUser()
-        await this.loadPosts()
-        await this.loadAlbums()
+    componentDidMount() {
+        
+        this.loadUser()
+        this.loadPosts()
+        this.loadAlbums()
     }
     render() {
-        const { user, loading, finish, error } = this.state
+        const { user } = this.state
         return (
             <Container>
                 <div className="profile">
-                    <header>
-                        <h1 className="text-center">{user.name}</h1>
-                        <div className="profile__information text-center">
-                            <p>{user.username}</p>
-                            <p>{user.email}</p>
-                        </div>
-                    </header>
-                    <ProfileSection user={user} />
-                    <PostsSection posts={user.posts} />
-                    <AlbumsSection albums={user.albums} />
+                    <Loading
+                        loading={this.state.loadingUser}
+                        finish={this.state.finishUser}
+                        error={this.state.errorUser}
+                    >
+                        <header>
+                            <h1 className="text-center">{user.name}</h1>
+                            <div className="profile__information text-center">
+                                <p>{user.username}</p>
+                                <p>{user.email}</p>
+                            </div>
+                        </header>
+                        <ProfileSection user={user} />
+                    </Loading>
+                    <PostsSection 
+                        posts={this.state.posts} 
+                        loading={this.state.loadingPosts}
+                        finish={this.state.finishPosts}
+                        error={this.state.errorPosts}
+                    />
+                    <AlbumsSection 
+                        albums={this.state.albums}
+                        loading={this.state.loadingAlbums}
+                        finish={this.state.finishAlbums}
+                        error={this.state.errorAlbums}
+                    />
                 </div>
             </Container>
         );
