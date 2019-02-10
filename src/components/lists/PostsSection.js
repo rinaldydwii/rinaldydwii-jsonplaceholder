@@ -1,16 +1,20 @@
 import React from "react";
 import PostItem from "../items/PostItem";
+import Loading from "../Loading";
 
-const PostsSection = ({posts}) => (
+const PostsSection = ({posts, loading, finish, error}) => (
     <section>
         <h2 className="text-center">Posts</h2>
-        { posts ? (
-            <div className="grid grid-5">
-                { posts.map(post => (
-                    <PostItem post={post} />
-                )) }
-            </div>
-        ) : <div>Posts not found!</div>}
+        <Loading loading={loading} finish={finish} error={error}>
+            { posts ? (
+                <div className="grid grid-5">
+                    { posts.map(post => (
+                        <PostItem post={post} key={post.id} />
+                    )) }
+                </div>
+            ) : <div>Posts not found!</div>
+            }
+        </Loading>
     </section>
 )
 export default PostsSection;
