@@ -8,17 +8,23 @@ class UsersView extends Component {
             users: [],
             loading: false,
             finish: false,
-            error: ""
+            error: "",
+            page: 1,
         }
     }
     loadUsers = () => {
-        fetch("https://jsonplaceholder.typicode.com/users")
+        const { page } = this.state
+        const limit = 20
+        this.setState({loading: page === 1 ? true : false})
+        fetch(`https://jsonplaceholder.typicode.com/users?_limit=${limit}&_page=${page}`)
             .then(res => res.json())
-            .then(users => this.setState({users, finish: true, loading: false}))
-            .catch(error => this.setState({error, finish: true}))
+            .then(users => {
+                if (users.length) this.setState(prevState => ({users: [...prevState.users, ...users], finish: true, loading: false, page: page + 1}))
+                if (!users.length || users.length < limit) this.setState({page: null})
+            })
+            .catch(error => this.setState({error, finish: true, loading: false}))
     }
     componentDidMount() {
-        this.setState({loading: true})
         this.loadUsers()
     }
     render() {
@@ -29,6 +35,8 @@ class UsersView extends Component {
                     loading={this.state.loading}
                     finish={this.state.finish}
                     error={this.state.error}
+                    onLoadUsers={this.loadUsers}
+                    paginate={this.state.page ? true : false}
                 />
             </Container>
         );
