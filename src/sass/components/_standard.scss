@@ -66,6 +66,23 @@ strong {
   font-weight: 700;
 }
 
+input[type=text], textarea {
+  padding: 8px 10px;
+  border: 1px solid $black50;
+  border-radius: 4px;
+  width: 300px;
+  font-size: 14px;
+  font-family: $lato;
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
 h {
   &1 {
     font-size: 2em;
