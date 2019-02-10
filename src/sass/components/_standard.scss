@@ -6,11 +6,11 @@
 
 body {
   font-family: $lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: $black87;
-  @include breakpoint(0, 480px) {
-      font-size: 14px;
+  @include breakpoint(481px) {
+      font-size: 16px;
   }
 }
 
@@ -34,15 +34,18 @@ body {
   @include breakpoint(1200px) {
       width: 1140px;
   }
-  &.view {
-    padding: 40px 0 25px;
-  }
   &__small {
     @include breakpoint (768px){
         max-width: 640px;
         margin-left: auto;
         margin-right: auto;
     }
+  }
+  &.view {
+    padding: 40px 0 25px;
+  }
+  &.full-screen {
+    height: 80vh;
   }
 }
 
