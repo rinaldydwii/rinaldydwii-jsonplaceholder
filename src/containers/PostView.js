@@ -1,49 +1,64 @@
 import React, { Component } from "react";
-import { Header } from "semantic-ui-react"
-import { Container, CommentsSection } from "../components";
+import { Container, CommentsSection, Loading } from "../components";
 
 class PostView extends Component {
     constructor() {
         super()
         this.state = {
             post: {},
-            loading: false,
-            finish: false,
-            error: ""
+            comments: [],
+            loadingPost: false,
+            finishPost: false,
+            errorPost: "",
+            loadingComments: false,
+            finishComments: false,
+            errorComments: ""
         }
     }
-    loadPost = async() => {
-        await fetch(`https://jsonplaceholder.typicode.com/posts/${this.props.match.params.id}`)
+    loadPost = () => {
+        this.setState({loadingPost: true})
+        fetch(`https://jsonplaceholder.typicode.com/posts/${this.props.match.params.id}`)
             .then(res => res.json())
-            .then(post => this.setState({post}))
-            .catch(error => this.setState({error, finish: true, loading: false}))
+            .then(post => this.setState({post, finishPost: true, loadingPost: false}))
+            .catch(errorPost => this.setState({errorPost, finishPost: true, loadingPost: false}))
     }
-    loadComments = async() => {
-        await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.props.match.params.id}`)
+    loadComments = () => {
+        this.setState({loadingComments: true})
+        fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.props.match.params.id}`)
         .then(res => res.json())
-        .then(comments => this.setState(prevState => ({post: {...prevState.post, comments}, finish: true, loading: false})))
-        .catch(error => this.setState({error, finish: true, loading: false}))
+        .then(comments => this.setState({comments, finishComments: true, loadingComments: false}))
+        .catch(errorComments => this.setState({errorComments, finishComments: true, loadingComments: false}))
     }
-    async componentDidMount() {
-        this.setState({loading: true})
-        await this.loadPost()
-        await this.loadComments()
+    componentDidMount() {
+        this.loadPost()
+        this.loadComments()
     }
     render() {
-        const { post, loading, finish, error } = this.state
+        const { post } = this.state
         return (
             <Container className="view">
-                <div className="post">
-                    <header>
-                        <h1 className="text-center">{post.title}</h1>
-                    </header>
-                    <article>
-                        <Container small>
-                            <p>{post.body}</p>
-                        </Container>
-                    </article>
-                </div>
-                <CommentsSection comments={post.comments} />
+                <Loading
+                    loading={this.state.loadingPost}
+                    finish={this.state.finishPost}
+                    error={this.state.errorPost}
+                >
+                    <div className="post">
+                        <header>
+                            <h1 className="text-center">{post.title}</h1>
+                        </header>
+                        <article>
+                            <Container small>
+                                <p>{post.body}</p>
+                            </Container>
+                        </article>
+                    </div>
+                    <CommentsSection 
+                        comments={this.state.comments} 
+                        loading={this.state.loadingComments}
+                        finish={this.state.finishComments}
+                        error={this.state.errorComments}
+                    />
+                </Loading>
             </Container>
         );
     }
