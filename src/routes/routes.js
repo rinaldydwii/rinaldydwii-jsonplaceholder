@@ -6,8 +6,15 @@ import PhotoView from "../containers/PhotoView";
 import PhotosView from "../containers/PhotosView";
 import AlbumsView from "../containers/AlbumsView";
 import PostsView from "../containers/PostsView";
+import HomeView from "../containers/HomeView";
+import Error404View from "../containers/Error404View";
 
 export const routes = [
+    {
+        exact: true,
+        path: "/",
+        component: HomeView,
+    },
     {
         exact: true,
         path: "/users",
@@ -47,5 +54,10 @@ export const routes = [
         exact: true,
         path: "/photos/:id",
         component: PhotoView
+    },
+    {
+        exact: false,
+        path: false,
+        component: Error404View
     }
 ]
