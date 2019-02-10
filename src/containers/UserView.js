@@ -14,9 +14,11 @@ class UserView extends Component {
             loadingPosts: false,
             finishPosts: false,
             errorPosts: "",
+            pagePosts: 1,
             loadingAlbums: false,
             finishAlbums: false,
-            errorAlbums: ""
+            errorAlbums: "",
+            pageAlbums: 1,
         }
     }
     loadUser = () => {
@@ -27,17 +29,27 @@ class UserView extends Component {
             .catch(errorUser => this.setState({errorUser, finishUser: true, loadingUser: false}))
     }
     loadPosts = () => {
-        this.setState({loadingPosts: true})
-        fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}`)
+        const page = this.state.pagePosts
+        const limit = 8
+        this.setState({loadingPosts: page === 1 ? true : false})
+        fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
             .then(res => res.json())
-            .then(posts => this.setState({posts, finishPosts: true, loadingPosts: false}))
+            .then(posts => {
+                if (posts.length) this.setState(prevState => ({posts: [...prevState.posts, ...posts], finishPosts: true, loadingPosts: false, pagePosts: page + 1}))
+                if (!posts.length || posts.length < limit) this.setState({pagePosts: null})
+            })
             .catch(errorPosts => this.setState({errorPosts, finishPosts: true, loadingPosts: false}))
     }
     loadAlbums = () => {
-        this.setState({loadingAlbums: true})
-        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}`)
+        const page = this.state.pageAlbums
+        const limit = 8
+        this.setState({loadingAlbums: page === 1 ? true : false})
+        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
             .then(res => res.json())
-            .then(albums => this.setState({albums, loadingAlbums: false, finishAlbums: true}))
+            .then(albums => {
+                if (albums.length) this.setState(prevState => ({albums: [...prevState.albums, ...albums], finishAlbums: true, loadingAlbums: false, pageAlbums: page + 1}))
+                if (!albums.length || albums.length < limit) this.setState({pageAlbums: null})
+            })
             .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
     }
     componentDidMount() {
@@ -68,12 +80,16 @@ class UserView extends Component {
                             loading={this.state.loadingPosts}
                             finish={this.state.finishPosts}
                             error={this.state.errorPosts}
+                            onLoadPosts={this.loadPosts}
+                            paginate={this.state.pagePosts ? true : false}
                         />
                         <AlbumsSection 
                             albums={this.state.albums}
                             loading={this.state.loadingAlbums}
                             finish={this.state.finishAlbums}
                             error={this.state.errorAlbums}
+                            onLoadAlbums={this.loadAlbums}
+                            paginate={this.state.pageAlbums ? true : false}
                         />
                     </Loading>
                 </div>
