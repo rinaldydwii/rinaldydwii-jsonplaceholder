@@ -24,27 +24,27 @@ class HomeView extends Component {
         }
     }
     loadUsers = () => {
-        fetch("https://jsonplaceholder.typicode.com/users")
+        fetch("https://jsonplaceholder.typicode.com/users?_limit=8")
             .then(res => res.json())
-            .then(users => this.setState({users: users.splice(0, 8), finishUsers: true, loadingUsers: false}))
+            .then(users => this.setState({users, finishUsers: true, loadingUsers: false}))
             .catch(errorUsers => this.setState({errorUsers, finishUsers: true, loadingUsers: false}))
     }
     loadPosts = () => {
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch("https://jsonplaceholder.typicode.com/posts?_limit=8")
             .then(res => res.json())
-            .then(posts => this.setState({posts: posts.splice(0, 8), finishPosts: true, loadingPosts: false}))
+            .then(posts => this.setState({posts, finishPosts: true, loadingPosts: false}))
             .catch(errorPosts => this.setState({errorPosts, finishPosts: true, loadingPosts: false}))
     }
     loadAlbums = () => {
-        fetch("https://jsonplaceholder.typicode.com/albums")
+        fetch("https://jsonplaceholder.typicode.com/albums?_limit=8")
             .then(res => res.json())
-            .then(albums => this.setState({albums: albums.splice(0, 8), finishAlbums: true, loadingAlbums: false}))
+            .then(albums => this.setState({albums, finishAlbums: true, loadingAlbums: false}))
             .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
     }
     loadPhotos = () => {
-        fetch("https://jsonplaceholder.typicode.com/photos")
+        fetch("https://jsonplaceholder.typicode.com/photos?_limit=8")
             .then(res => res.json())
-            .then(photos => this.setState({photos: photos.splice(0, 8), finishPhotos: true, loadingPhotos: false}))
+            .then(photos => this.setState({photos, finishPhotos: true, loadingPhotos: false}))
             .catch(errorPhotos => this.setState({errorPhotos, finishPhotos: true, loadingPhotos: false}))
     }
     componentDidMount() {
