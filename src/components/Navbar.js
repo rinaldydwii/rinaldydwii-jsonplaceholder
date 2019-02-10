@@ -4,9 +4,12 @@ import Container from "./Container";
 const Navbar = () => (
     <div className="nav">
         <Container>
-            <div className="nav__brand">Social Media</div>
+            <div className="nav__brand">
+                <a href="/">rinaldydwii</a>
+            </div>
             <nav>
                 <ul>
+                    <li className="nav__item"><a href="/">Home</a></li>
                     <li className="nav__item"><a href="/users">Users</a></li>
                     <li className="nav__item"><a href="/posts">Posts</a></li>
                     <li className="nav__item"><a href="/albums">Albums</a></li>
