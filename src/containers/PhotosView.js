@@ -24,7 +24,12 @@ class PhotosView extends Component {
     render() {
         return (
             <Container>
-                <PhotosSection photos={this.state.photos} />
+                <PhotosSection 
+                    photos={this.state.photos} 
+                    loading={this.state.loading}
+                    finish={this.state.finish}
+                    error={this.state.error}
+                />
             </Container>
         );
     }
