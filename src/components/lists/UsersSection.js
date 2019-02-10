@@ -1,8 +1,9 @@
 import React from "react";
 import UserItem from "../items/UserItem";
 import Loading from "../Loading";
+import ReadMoreButton from "../ReadMoreButton";
 
-const UsersSection = ({users, loading, finish, error}) => (
+const UsersSection = ({users, loading, finish, error, paginateToPage = false}) => (
     <section>
         <h2 className="text-center">Users</h2>
         <Loading loading={loading} finish={finish} error={error}>
@@ -15,6 +16,7 @@ const UsersSection = ({users, loading, finish, error}) => (
                 </div>
             ) : <div>Users not found!</div>
             }
+            { paginateToPage ? <ReadMoreButton to="/users" /> : "" }
         </Loading>
     </section>
 )
