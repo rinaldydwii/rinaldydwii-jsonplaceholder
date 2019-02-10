@@ -24,7 +24,12 @@ class AlbumsView extends Component {
     render() {
         return (
             <Container>
-                <AlbumsSection albums={this.state.albums} />
+                <AlbumsSection 
+                    albums={this.state.albums} 
+                    loading={this.state.loading}
+                    finish={this.state.finish}
+                    error={this.state.error}
+                />
             </Container>
         );
     }
