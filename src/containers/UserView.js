@@ -41,7 +41,6 @@ class UserView extends Component {
             .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
     }
     componentDidMount() {
-        
         this.loadUser()
         this.loadPosts()
         this.loadAlbums()
@@ -64,19 +63,19 @@ class UserView extends Component {
                             </div>
                         </header>
                         <ProfileSection user={user} />
+                        <PostsSection 
+                            posts={this.state.posts} 
+                            loading={this.state.loadingPosts}
+                            finish={this.state.finishPosts}
+                            error={this.state.errorPosts}
+                        />
+                        <AlbumsSection 
+                            albums={this.state.albums}
+                            loading={this.state.loadingAlbums}
+                            finish={this.state.finishAlbums}
+                            error={this.state.errorAlbums}
+                        />
                     </Loading>
-                    <PostsSection 
-                        posts={this.state.posts} 
-                        loading={this.state.loadingPosts}
-                        finish={this.state.finishPosts}
-                        error={this.state.errorPosts}
-                    />
-                    <AlbumsSection 
-                        albums={this.state.albums}
-                        loading={this.state.loadingAlbums}
-                        finish={this.state.finishAlbums}
-                        error={this.state.errorAlbums}
-                    />
                 </div>
             </Container>
         );
