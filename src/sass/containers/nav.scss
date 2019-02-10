@@ -1,23 +1,29 @@
 .nav {
     text-align: center;
     padding: 10px 0;
-    background: $electronBlue;
+    // background: $electronBlue;
     &__brand {
         margin-top: 15px;
         margin-bottom: 5px;
         color: $white;
         font-family: $ptSerif;
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 700;
+        a {
+            // color: $white;
+            &:hover {
+                // color: $greenDarnerTail;
+            }
+        }
     }
     &__item {
         display: inline-block;
         a {
             display: block;
             padding: 10px 5px;
-            color: $white;
+            // color: $white;
             &:hover {
-                color: $greenDarnerTail;
+                // color: $greenDarnerTail;
             }
         }
     }
