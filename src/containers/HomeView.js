@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { UsersSection, PostsSection, AlbumsSection, PhotosSection, Container } from "../components";
 
 class HomeView extends Component {
@@ -57,10 +57,30 @@ class HomeView extends Component {
     render() {
         return (
             <Container>
-                <UsersSection users={this.state.users} />
-                <PostsSection posts={this.state.posts} />
-                <AlbumsSection albums={this.state.albums} />
-                <PhotosSection photos={this.state.photos} />
+                <UsersSection 
+                    users={this.state.users} 
+                    loading={this.state.loadingUsers}
+                    finish={this.state.finishUsers}
+                    error={this.state.errorUsers}
+                />
+                <PostsSection 
+                    posts={this.state.posts} 
+                    loading={this.state.loadingPosts}
+                    finish={this.state.finishPosts}
+                    error={this.state.errorPosts}
+                />
+                <AlbumsSection 
+                    albums={this.state.albums} 
+                    loading={this.state.loadingAlbums}
+                    finish={this.state.finishAlbums}
+                    error={this.state.errorAlbums}
+                />
+                <PhotosSection 
+                    photos={this.state.photos} 
+                    loading={this.state.loadingPhotos}
+                    finish={this.state.finishPhotos}
+                    error={this.state.errorPhotos}
+                />
             </Container>
         );
     }
