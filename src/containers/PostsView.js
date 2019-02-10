@@ -13,14 +13,14 @@ class PostsView extends Component {
         }
     }
     loadPosts = () => {
-        const page = this.state.page
+        const { page } = this.state
         const limit = 20
         this.setState({loading: page === 1 ? true : false})
         fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`)
             .then(res => res.json())
             .then(posts => {
+                if (posts.length) this.setState(prevState => ({posts: [...prevState.posts, ...posts], finish: true, loading: false, page: page + 1}))
                 if (!posts.length || posts.length < limit) return this.setState({page: null})
-                this.setState(prevState => ({posts: [...prevState.posts, ...posts], finish: true, loading: false, page: page + 1}))
             })
             .catch(error => this.setState({error, finish: true, loading: false }))
     }

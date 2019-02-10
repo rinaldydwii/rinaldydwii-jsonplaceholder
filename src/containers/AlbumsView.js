@@ -19,9 +19,8 @@ class AlbumsView extends Component {
         fetch(`https://jsonplaceholder.typicode.com/albums?_limit=${limit}&_page=${page}`)
             .then(res => res.json())
             .then(albums => {
-                
+                if (albums.length) this.setState(prevState => ({albums: [...prevState.albums, ...albums], finish: true, loading: false, page: page + 1}))
                 if (!albums.length || albums.length < limit) return this.setState({page: null})
-                this.setState(prevState => ({albums: [...prevState.albums, ...albums], finish: true, loading: false, page: page + 1}))
             })
             .catch(error => this.setState({error, finish: true}))
     }

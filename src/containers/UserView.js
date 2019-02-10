@@ -19,24 +19,24 @@ class UserView extends Component {
             errorAlbums: ""
         }
     }
-    loadUser = async() => {
+    loadUser = () => {
         this.setState({loadingUser: true})
         fetch(`https://jsonplaceholder.typicode.com/users/${this.props.match.params.id}`)
             .then(res => res.json())
             .then(user => this.setState({user, finishUser: true, loadingUser: false}))
             .catch(errorUser => this.setState({errorUser, finishUser: true, loadingUser: false}))
     }
-    loadPosts = async() => {
+    loadPosts = () => {
         this.setState({loadingPosts: true})
         fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}`)
-        .then(res => res.json())
+            .then(res => res.json())
             .then(posts => this.setState({posts, finishPosts: true, loadingPosts: false}))
             .catch(errorPosts => this.setState({errorPosts, finishPosts: true, loadingPosts: false}))
     }
-    loadAlbums = async() => {
+    loadAlbums = () => {
         this.setState({loadingAlbums: true})
         fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}`)
-        .then(res => res.json())
+            .then(res => res.json())
             .then(albums => this.setState({albums, loadingAlbums: false, finishAlbums: true}))
             .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
     }

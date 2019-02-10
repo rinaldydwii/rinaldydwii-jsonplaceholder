@@ -19,8 +19,8 @@ class PhotosView extends Component {
         fetch(`https://jsonplaceholder.typicode.com/photos?_limit=${limit}&_page=${page}`)
             .then(res => res.json())
             .then(photos => {
+                if (photos.length) this.setState(prevState => ({photos: [...prevState.photos, ...photos], finish: true, loading: false, page: page + 1}))
                 if (!photos.length || photos.length < limit) return this.setState({page: null})
-                this.setState(prevState => ({photos: [...prevState.photos, ...photos], finish: true, loading: false, page: page + 1}))
             })
             .catch(error => this.setState({error, finish: true, loading: false}))
     }
