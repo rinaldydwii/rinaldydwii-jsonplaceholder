@@ -1,12 +1,20 @@
 import React from "react";
-import { Container, Loader } from "semantic-ui-react"
+import Container from "./Container";
 
 const Loading = ({loading, finish, error, children}) => {
     return loading ? (
-        <Container>
-            <Loader active={loading}/>
-        </Container>
-    ) : !error && finish ? children : <Container>{error}</Container>
+        <div className="text-center">
+            <img src={require('../assets/loading.svg')} alt="loading" className="loading__image"/>
+        </div>
+    ) : (
+        !error && finish ?
+        children : 
+        (
+            <Container>
+                <p>{error}</p>
+            </Container>
+        )
+    )
 }
 
 export default Loading;
