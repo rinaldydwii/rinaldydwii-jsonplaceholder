@@ -7,7 +7,7 @@ const UsersSection = ({users, loading, finish, error}) => (
         <h2 className="text-center">Users</h2>
         <Loading loading={loading} finish={finish} error={error}>
             { users ? (
-                <div className="grid grid-5">
+                <div className="grid grid-4">
                     { users.map(user => (
                             <UserItem user={user} key={user.id} />
                         )) 

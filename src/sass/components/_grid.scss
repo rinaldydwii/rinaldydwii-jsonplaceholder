@@ -2,7 +2,7 @@
     display: grid;
     grid-column-gap: 15px;
     grid-row-gap: 15px;
-    &-5 {
+    &-4 {
         grid-template-columns: repeat(4, 1fr);
     }
     &__item {

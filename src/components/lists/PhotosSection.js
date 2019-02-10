@@ -7,7 +7,7 @@ const PhotosSection = ({photos, loading, finish, error}) => (
         <h2 className="text-center">Photos</h2>
         <Loading loading={loading} finish={finish} error={error}>
             { photos ? (
-                <div className="grid grid-5">
+                <div className="grid grid-4">
                     { photos.map(photo => (
                             <PhotoItem photo={photo} key={photo.id} />
                         ))

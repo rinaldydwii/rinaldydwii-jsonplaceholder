@@ -7,7 +7,7 @@ const PostsSection = ({posts, loading, finish, error}) => (
         <h2 className="text-center">Posts</h2>
         <Loading loading={loading} finish={finish} error={error}>
             { posts ? (
-                <div className="grid grid-5">
+                <div className="grid grid-4">
                     { posts.map(post => (
                         <PostItem post={post} key={post.id} />
                     )) }

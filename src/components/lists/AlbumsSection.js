@@ -7,7 +7,7 @@ const AlbumsSection = ({albums, loading, finish, error}) => (
         <h2 className="text-center">Albums</h2>
         <Loading loading={loading} finish={finish} error={error}>
             { albums ? (
-                <div className="grid grid-5">
+                <div className="grid grid-4">
                     { albums.map(album => (
                         <AlbumItem album={album} key={album.id} />
                     )) }
