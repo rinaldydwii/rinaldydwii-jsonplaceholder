@@ -12,7 +12,8 @@ class AlbumView extends Component {
             errorAlbum: "",
             loadingPhotos: false,
             finishPhotos: false,
-            errorPhotos: ""
+            errorPhotos: "",
+            pagePhotos: 1
         }
     }
     loadAlbum = () => {
@@ -23,10 +24,15 @@ class AlbumView extends Component {
             .catch(errorAlbum => this.setState({errorAlbum, finishAlbum: true, loadingAlbum: false}))
     }
     loadPhotos = () => {
-        this.setState({loadingPhotos: true})
-        fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${this.props.match.params.id}`)
+        const page = this.state.pagePhotos
+        const limit = 8
+        this.setState({loading: page === 1 ? true : false})
+        fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
             .then(res => res.json())
-            .then(photos => this.setState({photos, finishPhotos: true, loadingPhotos: false}))
+            .then(photos => {
+                if (photos.length) this.setState(prevState => ({photos: [...prevState.photos, ...photos], finishPhotos: true, loadingPhotos: false, pagePhotos: page + 1}))
+                if (!photos.length || photos.length < limit) this.setState({pagePhotos: null})
+            })
             .catch(errorPhotos => this.setState({errorPhotos, finishPhotos: true, loadingPhotos: false}))
     }
     componentDidMount() {
@@ -48,6 +54,8 @@ class AlbumView extends Component {
                         loading={this.state.loadingPhotos}
                         finish={this.state.finishPhotos}
                         error={this.state.errorPhotos}
+                        onLoadPhotos={this.loadPhotos}
+                        paginate={this.state.pagePhotos ? true : false}
                     />
                 </Loading>
             </Container>
