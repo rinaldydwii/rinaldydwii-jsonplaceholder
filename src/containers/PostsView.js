@@ -24,7 +24,12 @@ class PostsView extends Component {
     render() {
         return (
             <Container>
-                <PostsSection posts={this.state.posts} />
+                <PostsSection 
+                    posts={this.state.posts} 
+                    loading={this.state.loading}
+                    finish={this.state.finish}
+                    error={this.state.error}
+                />
             </Container>
         );
     }
