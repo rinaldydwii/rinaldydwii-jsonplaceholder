@@ -57,7 +57,7 @@ export const routes = [
     },
     {
         exact: false,
-        path: false,
+        path: "",
         component: Error404View
     }
 ]
