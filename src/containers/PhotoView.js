@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "../components";
+import { Container, Loading } from "../components";
 
 class PhotoView extends Component {
     constructor() {
@@ -22,13 +22,19 @@ class PhotoView extends Component {
         this.loadPhoto()
     }
     render() {
-        const { photo, loading, finish, error } = this.state
+        const { photo } = this.state
         return (
             <Container className="view text-center">
-                <div className="photo__image">
-                    <img src={photo.url} alt={photo.title} />
-                </div>
-                <h1>{photo.title}</h1>
+                <Loading
+                    loading={this.state.loading}
+                    finish={this.state.finish}
+                    error={this.state.error}
+                >
+                    <div className="photo__image">
+                        <img src={photo.url} alt={photo.title} />
+                    </div>
+                    <h1>{photo.title}</h1>
+                </Loading>
             </Container>
         );
     }
