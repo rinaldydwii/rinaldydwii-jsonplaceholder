@@ -8,17 +8,23 @@ class PostsView extends Component {
             posts: [],
             loading: false,
             finish: false,
-            error: ""
+            error: "",
+            page: 1
         }
     }
     loadPosts = () => {
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        const page = this.state.page
+        const limit = 20
+        this.setState({loading: page === 1 ? true : false})
+        fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`)
             .then(res => res.json())
-            .then(posts => this.setState({posts, finish: true, loading: false}))
-            .catch(error => this.setState({error, finish: true}))
+            .then(posts => {
+                if (!posts.length || posts.length < limit) return this.setState({page: null})
+                this.setState(prevState => ({posts: [...prevState.posts, ...posts], finish: true, loading: false, page: page + 1}))
+            })
+            .catch(error => this.setState({error, finish: true, loading: false }))
     }
     componentDidMount() {
-        this.setState({loading: true})
         this.loadPosts()
     }
     render() {
@@ -29,6 +35,8 @@ class PostsView extends Component {
                     loading={this.state.loading}
                     finish={this.state.finish}
                     error={this.state.error}
+                    onLoadPosts={this.loadPosts}
+                    paginate={this.state.page ? true : false}
                 />
             </Container>
         );
