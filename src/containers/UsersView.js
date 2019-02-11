@@ -15,8 +15,6 @@ class UsersView extends Component {
                     loading={this.props.loading}
                     finish={this.props.finish}
                     error={this.props.error}
-                    // onLoadUsers={this.loadUsers}
-                    // paginate={this.state.page ? true : false}
                 />
             </Container>
         );

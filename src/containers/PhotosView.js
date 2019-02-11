@@ -15,8 +15,6 @@ class PhotosView extends Component {
                     loading={this.props.loading}
                     finish={this.props.finish}
                     error={this.props.error}
-                    // onLoadPhotos={this.loadPhotos}
-                    // paginate={this.state.page ? true : false}
                 />
             </Container>
         );

@@ -15,8 +15,6 @@ class PostsView extends Component {
                     loading={this.props.loading}
                     finish={this.props.finish}
                     error={this.props.error}
-                    // onLoadPosts={this.loadPosts}
-                    // paginate={this.state.page ? true : false}
                 />
             </Container>
         );

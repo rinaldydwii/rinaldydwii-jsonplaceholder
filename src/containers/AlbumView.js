@@ -25,8 +25,6 @@ class AlbumView extends Component {
                         loading={this.props.loadingPhotos}
                         finish={this.props.finishPhotos}
                         error={this.props.errorPhotos}
-                        // onLoadPhotos={this.loadPhotos}
-                        // paginate={this.state.pagePhotos ? true : false}
                     />
                 </Loading>
             </Container>
