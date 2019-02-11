@@ -65,6 +65,30 @@ export const postsReducer = (state = initialStatePosts, action) => {
                 loading: false,
                 finish: true
             }
+        case UPDATE_POST:
+            return {
+                ...state,
+                data: action.data,
+                loading: true
+            }
+        case UPDATE_POST_SUCCESS:
+            return {
+                ...state,
+                post: state.post.map(post => {
+                    if (post.id === action.post.id)
+                        return action.post
+                    return post
+                }),
+                loading: false,
+                finish: true
+            }
+        case UPDATE_POST_FAILED:
+            return {
+                ...state,
+                error: action.error,
+                loading: false,
+                finish: true
+            }
         case DELETE_POST:
             return {
                 ...state,
@@ -117,30 +141,6 @@ export const postReducer = (state = initialStatePost, action) => {
                 finish: true
             }
         case FETCH_POST_FAILED:
-            return {
-                ...state,
-                error: action.error,
-                loading: false,
-                finish: true
-            }
-        case UPDATE_POST:
-            return {
-                ...state,
-                data: action.data,
-                loading: true
-            }
-        case UPDATE_POST_SUCCESS:
-            return {
-                ...state,
-                post: state.post.map(post => {
-                    if (post.id === action.post.id)
-                        return action.post
-                    return post
-                }),
-                loading: false,
-                finish: true
-            }
-        case UPDATE_POST_FAILED:
             return {
                 ...state,
                 error: action.error,
