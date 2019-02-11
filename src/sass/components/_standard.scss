@@ -63,7 +63,7 @@ strong {
   font-weight: 700;
 }
 
-input[type=text], textarea {
+input[type=text], input[type=email], textarea {
   padding: 8px 10px;
   border: 1px solid $black50;
   border-radius: 4px;
