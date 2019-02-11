@@ -13,6 +13,12 @@ function requestFetchAlbums() {
         type: FETCH_ALBUMS,
     }
 }
+function requestFetchAlbumsByUserId(userId) {
+    return {
+        type: FETCH_ALBUMS,
+        userId
+    }
+}
 function successFetchAlbums(albums) {
     return {
         type: FETCH_ALBUMS_SUCCESS,
@@ -44,11 +50,19 @@ function failureFetchAlbum(error) {
     }
 }
 
-
 export function fetchAlbums(){
     return dispatch => {
         dispatch(requestFetchAlbums())
         axios.get(apiUrl.albums)
+			.then(response => dispatch(successFetchAlbums(response.data)))
+			.catch(_ => dispatch(failureFetchAlbums("Fetch albums failed!")))
+    }
+}
+
+export function fetchAlbumsByUserId(id){
+    return dispatch => {
+        dispatch(requestFetchAlbumsByUserId(id))
+        axios.get(`${apiUrl.albums}?userId=${id}`)
 			.then(response => dispatch(successFetchAlbums(response.data)))
 			.catch(_ => dispatch(failureFetchAlbums("Fetch albums failed!")))
     }

@@ -13,6 +13,12 @@ function requestFetchPhotos() {
         type: FETCH_PHOTOS,
     }
 }
+function requestFetchPhotosByAlbumId(albumId) {
+    return {
+        type: FETCH_PHOTOS,
+        albumId
+    }
+}
 function successFetchPhotos(photos) {
     return {
         type: FETCH_PHOTOS_SUCCESS,
@@ -48,6 +54,15 @@ export function fetchPhotos(){
     return dispatch => {
         dispatch(requestFetchPhotos())
         axios.get(apiUrl.photos)
+			.then(response => dispatch(successFetchPhotos(response.data)))
+			.catch(_ => dispatch(failureFetchPhotos("Fetch photos failed!")))
+    }
+}
+
+export function fetchPhotosByAlbumId(id){
+    return dispatch => {
+        dispatch(requestFetchPhotosByAlbumId(id))
+        axios.get(`${apiUrl.photos}?albumId=${id}`)
 			.then(response => dispatch(successFetchPhotos(response.data)))
 			.catch(_ => dispatch(failureFetchPhotos("Fetch photos failed!")))
     }
