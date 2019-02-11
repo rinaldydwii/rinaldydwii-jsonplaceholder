@@ -82,6 +82,7 @@ class UserView extends Component {
                             error={this.state.errorPosts}
                             onLoadPosts={this.loadPosts}
                             paginate={this.state.pagePosts ? true : false}
+                            action
                         />
                         <AlbumsSection 
                             albums={this.state.albums}
