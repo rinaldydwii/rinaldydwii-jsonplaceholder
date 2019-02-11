@@ -14,7 +14,6 @@ class UserView extends Component {
     }
     render() {
         const { user } = this.props
-        console.log(this.props)
         return (
             <Container>
                 <div className="profile">
