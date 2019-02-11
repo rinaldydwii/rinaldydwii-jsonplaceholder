@@ -1,45 +1,36 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { Container, AlbumsSection } from "../components";
+import { fetchAlbums } from "../actions/albumActions";
 
 class AlbumsView extends Component {
-    constructor() {
-        super()
-        this.state = {
-            albums: [],
-            loading: false,
-            finish: false,
-            error: "",
-            page: 1,
-        }
-    }
-    loadAlbums = () => {
-        const { page } = this.state
-        const limit = 20
-        this.setState({loading: page === 1 ? true : false})
-        fetch(`https://jsonplaceholder.typicode.com/albums?_limit=${limit}&_page=${page}`)
-            .then(res => res.json())
-            .then(albums => {
-                if (albums.length) this.setState(prevState => ({albums: [...prevState.albums, ...albums], finish: true, loading: false, page: page + 1}))
-                if (!albums.length || albums.length < limit) return this.setState({page: null})
-            })
-            .catch(error => this.setState({error, finish: true}))
-    }
     componentDidMount() {
-        this.loadAlbums()
+        this.props.getAlbums()
     }
     render() {
         return (
             <Container>
                 <AlbumsSection 
-                    albums={this.state.albums} 
-                    loading={this.state.loading}
-                    finish={this.state.finish}
-                    error={this.state.error}
-                    onLoadAlbums={this.loadAlbums}
-                    paginate={this.state.page ? true : false}
+                    albums={this.props.albums} 
+                    loading={this.props.loading}
+                    finish={this.props.finish}
+                    error={this.props.error}
+                    // onLoadAlbums={this.loadAlbums}
+                    // paginate={this.state.page ? true : false}
                 />
             </Container>
         );
     }
 }
-export default AlbumsView;
+
+const mapStateToProps = state => ({
+    albums: state.albumsReducer.albums,
+    loading: state.albumsReducer.loading,
+    finish: state.albumsReducer.finish,
+    error: state.albumsReducer.error
+})
+  
+const mapDispatchToProps = (dispatch) => ({
+    getAlbums: () => dispatch(fetchAlbums())
+})
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumsView);
