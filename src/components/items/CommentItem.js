@@ -23,7 +23,7 @@ class CommentItem extends React.Component {
     updateComment = (e) => {
         e.preventDefault()
         e.persist()
-        this.props.editComment(this.props.postId, {
+        this.props.editComment(this.props.comment.id, {
             name: e.target.name.value,
             email: e.target.email.value,
             body: e.target.body.value,
