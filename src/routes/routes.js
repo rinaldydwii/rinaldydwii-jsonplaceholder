@@ -34,18 +34,18 @@ export const routes = [
     },
     {
         exact: true,
-        path: "/posts/:id",
-        component: PostView
-    },
-    {
-        exact: true,
-        path: "/posts/:id/add",
+        path: "/posts/add",
         component: AddPostView
     },
     {
         exact: true,
         path: "/posts/:id/edit",
         component: EditPostView
+    },
+    {
+        exact: true,
+        path: "/posts/:id",
+        component: PostView
     },
     {
         exact: true,
