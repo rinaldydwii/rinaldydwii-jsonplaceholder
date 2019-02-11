@@ -22,6 +22,12 @@ function requestFetchPosts() {
         type: FETCH_POSTS,
     }
 }
+function requestFetchPostsByUserId(userId) {
+    return {
+        type: FETCH_POSTS,
+        userId
+    }
+}
 function successFetchPosts(posts) {
     return {
         type: FETCH_POSTS_SUCCESS,
@@ -111,6 +117,15 @@ export function fetchPosts(){
     return dispatch => {
         dispatch(requestFetchPosts())
         axios.get(apiUrl.posts)
+			.then(response => dispatch(successFetchPosts(response.data)))
+			.catch(_ => dispatch(failureFetchPosts("Fetch posts failed!")))
+    }
+}
+
+export function fetchPostsByUserId(id){
+    return dispatch => {
+        dispatch(requestFetchPostsByUserId(id))
+        axios.get(`${apiUrl.posts}?userId=${id}`)
 			.then(response => dispatch(successFetchPosts(response.data)))
 			.catch(_ => dispatch(failureFetchPosts("Fetch posts failed!")))
     }
