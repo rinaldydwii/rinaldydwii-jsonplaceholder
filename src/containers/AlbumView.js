@@ -1,65 +1,51 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { Container, PhotosSection, Loading } from "../components";
+import { fetchAlbum } from "../actions/albumActions";
+import { fetchPhotosByAlbumId } from "../actions/photoActions";
 
 class AlbumView extends Component {
-    constructor() {
-        super()
-        this.state = {
-            album: {},
-            photos: [],
-            loadingAlbum: false,
-            finishAlbum: false,
-            errorAlbum: "",
-            loadingPhotos: false,
-            finishPhotos: false,
-            errorPhotos: "",
-            pagePhotos: 1
-        }
-    }
-    loadAlbum = () => {
-        this.setState({loadingAlbum: true})
-        fetch(`https://jsonplaceholder.typicode.com/albums/${this.props.match.params.id}`)
-            .then(res => res.json())
-            .then(album => this.setState({album, finishAlbum: true, loadingAlbum: false}))
-            .catch(errorAlbum => this.setState({errorAlbum, finishAlbum: true, loadingAlbum: false}))
-    }
-    loadPhotos = () => {
-        const page = this.state.pagePhotos
-        const limit = 8
-        this.setState({loading: page === 1 ? true : false})
-        fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
-            .then(res => res.json())
-            .then(photos => {
-                if (photos.length) this.setState(prevState => ({photos: [...prevState.photos, ...photos], finishPhotos: true, loadingPhotos: false, pagePhotos: page + 1}))
-                if (!photos.length || photos.length < limit) this.setState({pagePhotos: null})
-            })
-            .catch(errorPhotos => this.setState({errorPhotos, finishPhotos: true, loadingPhotos: false}))
-    }
     componentDidMount() {
-        this.loadAlbum()
-        this.loadPhotos()
+        const albumId = this.props.match.params.id
+        this.props.getAlbum(albumId)
+        this.props.getPhotos(albumId)
     }
     render() {
-        const { album } = this.state
+        const { album } = this.props
         return (
             <Container className="view">
                 <Loading
-                    loading={this.state.loadingAlbum}
-                    finish={this.state.finishAlbum}
-                    error={this.state.errorAlbum}
+                    loading={this.props.loadingAlbum}
+                    finish={this.props.finishAlbum}
+                    error={this.props.errorAlbum}
                 >
                     <h1 className="text-center">{album.title}</h1>
-                    <PhotosSection 
-                        photos={this.state.photos} 
-                        loading={this.state.loadingPhotos}
-                        finish={this.state.finishPhotos}
-                        error={this.state.errorPhotos}
-                        onLoadPhotos={this.loadPhotos}
-                        paginate={this.state.pagePhotos ? true : false}
+                    <PhotosSection
+                        photos={this.props.photos} 
+                        loading={this.props.loadingPhotos}
+                        finish={this.props.finishPhotos}
+                        error={this.props.errorPhotos}
+                        // onLoadPhotos={this.loadPhotos}
+                        // paginate={this.state.pagePhotos ? true : false}
                     />
                 </Loading>
             </Container>
         );
     }
 }
-export default AlbumView;
+const mapStateToProps = state => ({
+    album: state.albumReducer.album,
+    loadingAlbum: state.albumReducer.loading,
+    finishAlbum: state.albumReducer.finish,
+    errorAlbum: state.albumReducer.error,
+    photos: state.photosReducer.photos,
+    loadingPhotos: state.photosReducer.loading,
+    finishPhotos: state.photosReducer.finish,
+    errorPhotos: state.photosReducer.error,
+})
+  
+const mapDispatchToProps = (dispatch) => ({
+    getAlbum: (id) => dispatch(fetchAlbum(id)),
+    getPhotos: (id) => dispatch(fetchPhotosByAlbumId(id)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumView);

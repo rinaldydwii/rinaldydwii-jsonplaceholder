@@ -1,71 +1,27 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { ProfileSection, PostsSection, AlbumsSection, Container, Loading } from "../components";
+import { fetchUser } from "../actions/userActions";
+import { fetchPostsByUserId } from "../actions/postActions";
+import { fetchAlbumsByUserId } from "../actions/albumActions";
 
 class UserView extends Component {
-    constructor() {
-        super()
-        this.state = {
-            user: {},
-            posts: [],
-            albums: [],
-            loadingUser: false,
-            finishUser: false,
-            errorUser: "",
-            loadingPosts: false,
-            finishPosts: false,
-            errorPosts: "",
-            pagePosts: 1,
-            loadingAlbums: false,
-            finishAlbums: false,
-            errorAlbums: "",
-            pageAlbums: 1,
-        }
-    }
-    loadUser = () => {
-        this.setState({loadingUser: true})
-        fetch(`https://jsonplaceholder.typicode.com/users/${this.props.match.params.id}`)
-            .then(res => res.json())
-            .then(user => this.setState({user, finishUser: true, loadingUser: false}))
-            .catch(errorUser => this.setState({errorUser, finishUser: true, loadingUser: false}))
-    }
-    loadPosts = () => {
-        const page = this.state.pagePosts
-        const limit = 8
-        this.setState({loadingPosts: page === 1 ? true : false})
-        fetch(`https://jsonplaceholder.typicode.com/posts?userId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
-            .then(res => res.json())
-            .then(posts => {
-                if (posts.length) this.setState(prevState => ({posts: [...prevState.posts, ...posts], finishPosts: true, loadingPosts: false, pagePosts: page + 1}))
-                if (!posts.length || posts.length < limit) this.setState({pagePosts: null})
-            })
-            .catch(errorPosts => this.setState({errorPosts, finishPosts: true, loadingPosts: false}))
-    }
-    loadAlbums = () => {
-        const page = this.state.pageAlbums
-        const limit = 8
-        this.setState({loadingAlbums: page === 1 ? true : false})
-        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${this.props.match.params.id}&_limit=${limit}&_page=${page}`)
-            .then(res => res.json())
-            .then(albums => {
-                if (albums.length) this.setState(prevState => ({albums: [...prevState.albums, ...albums], finishAlbums: true, loadingAlbums: false, pageAlbums: page + 1}))
-                if (!albums.length || albums.length < limit) this.setState({pageAlbums: null})
-            })
-            .catch(errorAlbums => this.setState({errorAlbums, finishAlbums: true, loadingAlbums: false}))
-    }
     componentDidMount() {
-        this.loadUser()
-        this.loadPosts()
-        this.loadAlbums()
+        const userId = this.props.match.params.id
+        this.props.getUser(userId)
+        this.props.getPosts(userId)
+        this.props.getAlbums(userId)
     }
     render() {
-        const { user } = this.state
+        const { user } = this.props
+        console.log(this.props)
         return (
             <Container>
                 <div className="profile">
                     <Loading
-                        loading={this.state.loadingUser}
-                        finish={this.state.finishUser}
-                        error={this.state.errorUser}
+                        loading={this.props.loadingUser}
+                        finish={this.props.finishUser}
+                        error={this.props.errorUser}
                     >
                         <header>
                             <h1 className="text-center">{user.name}</h1>
@@ -76,21 +32,21 @@ class UserView extends Component {
                         </header>
                         <ProfileSection user={user} />
                         <PostsSection 
-                            posts={this.state.posts} 
-                            loading={this.state.loadingPosts}
-                            finish={this.state.finishPosts}
-                            error={this.state.errorPosts}
-                            onLoadPosts={this.loadPosts}
-                            paginate={this.state.pagePosts ? true : false}
-                            action
+                            posts={this.props.posts} 
+                            loading={this.props.loadingPosts}
+                            finish={this.props.finishPosts}
+                            error={this.props.errorPosts}
+                            // onLoadPosts={this.loadPosts}
+                            // paginate={this.state.pagePosts ? true : false}
+                            // action
                         />
                         <AlbumsSection 
-                            albums={this.state.albums}
-                            loading={this.state.loadingAlbums}
-                            finish={this.state.finishAlbums}
-                            error={this.state.errorAlbums}
-                            onLoadAlbums={this.loadAlbums}
-                            paginate={this.state.pageAlbums ? true : false}
+                            albums={this.props.albums}
+                            loading={this.props.loadingAlbums}
+                            finish={this.props.finishAlbums}
+                            error={this.props.errorAlbums}
+                            // onLoadAlbums={this.loadAlbums}
+                            // paginate={this.state.pageAlbums ? true : false}
                         />
                     </Loading>
                 </div>
@@ -98,4 +54,25 @@ class UserView extends Component {
         );
     }
 }
-export default UserView;
+
+const mapStateToProps = state => ({
+    user: state.userReducer.user,
+    loadingUser: state.userReducer.loading,
+    finishUser: state.userReducer.finish,
+    errorUser: state.userReducer.error,
+    posts: state.postsReducer.posts,
+    loadingPosts: state.postsReducer.loading,
+    finishPosts: state.postsReducer.finish,
+    errorPosts: state.postsReducer.error,
+    albums: state.albumsReducer.albums,
+    loadingAlbums: state.albumsReducer.loading,
+    finishAlbums: state.albumsReducer.finish,
+    errorAlbums: state.albumsReducer.error,
+})
+  
+const mapDispatchToProps = (dispatch) => ({
+    getUser: (id) => dispatch(fetchUser(id)),
+    getPosts: (id) => dispatch(fetchPostsByUserId(id)),
+    getAlbums: (id) => dispatch(fetchAlbumsByUserId(id))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(UserView);

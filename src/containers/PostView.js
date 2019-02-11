@@ -1,56 +1,10 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { Container, CommentsSection, Loading } from "../components";
+import { fetchPost } from "../actions/postActions";
+import { fetchCommentsById } from "../actions/commentActions";
 
 class PostView extends Component {
-    constructor() {
-        super()
-        this.state = {
-            post: {},
-            comments: [],
-            loadingPost: false,
-            finishPost: false,
-            errorPost: "",
-            loadingComments: false,
-            finishComments: false,
-            errorComments: ""
-        }
-    }
-    loadPost = () => {
-        this.setState({loadingPost: true})
-        fetch(`https://jsonplaceholder.typicode.com/posts/${this.props.match.params.id}`)
-            .then(res => res.json())
-            .then(post => this.setState({post, finishPost: true, loadingPost: false}))
-            .catch(errorPost => this.setState({errorPost, finishPost: true, loadingPost: false}))
-    }
-    loadComments = () => {
-        this.setState({loadingComments: true})
-        fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.props.match.params.id}`)
-        .then(res => res.json())
-        .then(comments => this.setState({comments, finishComments: true, loadingComments: false}))
-        .catch(errorComments => this.setState({errorComments, finishComments: true, loadingComments: false}))
-    }
-    addComment = (event) => {
-        event.preventDefault()
-        event.persist()
-        fetch(`https://jsonplaceholder.typicode.com/comments`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                postId: this.props.match.params.id,
-                name: event.target.name.value,
-                email: event.target.email.value,
-                body: event.target.body.value,
-            })
-        })
-            .then(res => res.json())
-            .then(comment => {
-                this.setState(prevState => ({comments: [...prevState.comments, comment]}))
-                event.target.reset()
-            })
-            .catch(errorComments => this.setState({errorComments}))
-    }
     editComment = (id, event) => {
         event.preventDefault()
         event.persist()
@@ -92,17 +46,18 @@ class PostView extends Component {
             .catch(errorComments => this.setState({errorComments}))
     }
     componentDidMount() {
-        this.loadPost()
-        this.loadComments()
+        const postId = this.props.match.params.id
+        this.props.getPost(postId)
+        this.props.getComments(postId)
     }
     render() {
-        const { post } = this.state
+        const { post } = this.props
         return (
             <Container className="view">
                 <Loading
-                    loading={this.state.loadingPost}
-                    finish={this.state.finishPost}
-                    error={this.state.errorPost}
+                    loading={this.props.loadingPost}
+                    finish={this.props.finishPost}
+                    error={this.props.errorPost}
                 >
                     <div className="post">
                         <header>
@@ -115,16 +70,30 @@ class PostView extends Component {
                         </article>
                     </div>
                     <CommentsSection
-                        comments={this.state.comments} 
-                        loading={this.state.loadingComments}
-                        finish={this.state.finishComments}
-                        error={this.state.errorComments}
-                        onSubmitComment={this.addComment}
-                        onDeleteComment={this.deleteComment}
+                        comments={this.props.comments} 
+                        loading={this.props.loadingComments}
+                        finish={this.props.finishComments}
+                        error={this.props.errorComments}
                     />
                 </Loading>
             </Container>
         );
     }
 }
-export default PostView;
+
+const mapStateToProps = state => ({
+    post: state.postReducer.post,
+    loadingPost: state.postReducer.loading,
+    finishPost: state.postReducer.finish,
+    errorPost: state.postReducer.error,
+    comments: state.commentsReducer.comments,
+    loadingComments: state.commentsReducer.loading,
+    finishComments: state.commentsReducer.finish,
+    errorComments: state.commentsReducer.error,
+})
+  
+const mapDispatchToProps = (dispatch) => ({
+    getPost: (id) => dispatch(fetchPost(id)),
+    getComments: (id) => dispatch(fetchCommentsById(id))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(PostView);

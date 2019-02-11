@@ -1,34 +1,20 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { Container, Loading } from "../components";
+import { fetchPhoto } from "../actions/photoActions";
 
 class PhotoView extends Component {
-    constructor() {
-        super()
-        this.state = {
-            photo: {},
-            loading: false,
-            finish: false,
-            error: ""
-        }
-    }
-    loadPhoto = () => {
-        fetch(`https://jsonplaceholder.typicode.com/photos/${this.props.match.params.id}`)
-            .then(res => res.json())
-            .then(photo => this.setState({photo, finish: true, loading: false}))
-            .catch(error => this.setState({error, finish: true, loading: false}))
-    }
     componentDidMount() {
-        this.setState({loading: true})
-        this.loadPhoto()
+        this.props.getPhoto(this.props.match.params.id)
     }
     render() {
-        const { photo } = this.state
+        const { photo } = this.props
         return (
             <Container className="view text-center">
                 <Loading
-                    loading={this.state.loading}
-                    finish={this.state.finish}
-                    error={this.state.error}
+                    loading={this.props.loading}
+                    finish={this.props.finish}
+                    error={this.props.error}
                 >
                     <div className="photo__image">
                         <img src={photo.url} alt={photo.title} />
@@ -39,4 +25,15 @@ class PhotoView extends Component {
         );
     }
 }
-export default PhotoView;
+
+const mapStateToProps = state => ({
+    photo: state.photoReducer.photo,
+    loading: state.photoReducer.loading,
+    finish: state.photoReducer.finish,
+    error: state.photoReducer.error,
+})
+  
+const mapDispatchToProps = (dispatch) => ({
+    getPhoto: (id) => dispatch(fetchPhoto(id)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoView);
