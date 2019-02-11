@@ -24,7 +24,7 @@ let initialStatePosts = {
     error: ''
 };
 
-const postReducer = (state = initialStatePosts, action) => {
+export const postsReducer = (state = initialStatePosts, action) => {
     switch (action.type) {
         case FETCH_POSTS:
             return {
@@ -52,4 +52,37 @@ const postReducer = (state = initialStatePosts, action) => {
     }
 }
 
-export default postReducer
+let initialStatePost = {
+    loading: false,
+    finish: false,
+    post: {},
+    error: ''
+};
+
+export const postReducer = (state = initialStatePost, action) => {
+    switch (action.type) {
+        case FETCH_POST:
+            return {
+                ...state,
+                loading: true,
+            }
+        case FETCH_POST_SUCCESS:
+            return {
+                ...state,
+                post: action.post,
+                loading: false,
+                finish: true
+            }
+        case FETCH_POST_FAILED:
+            return {
+                ...state,
+                error: action.error,
+                loading: false,
+                finish: true
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}

@@ -15,7 +15,7 @@ let initialStateAlbums = {
     error: ''
 };
 
-const albumReducer = (state = initialStateAlbums, action) => {
+export const albumsReducer = (state = initialStateAlbums, action) => {
     switch (action.type) {
         case FETCH_ALBUMS:
             return {
@@ -43,4 +43,37 @@ const albumReducer = (state = initialStateAlbums, action) => {
     }
 }
 
-export default albumReducer
+let initialStateAlbum = {
+    loading: false,
+    finish: false,
+    album: {},
+    error: ''
+};
+
+export const albumReducer = (state = initialStateAlbum, action) => {
+    switch (action.type) {
+        case FETCH_ALBUM:
+            return {
+                ...state,
+                loading: true,
+            }
+        case FETCH_ALBUM_SUCCESS:
+            return {
+                ...state,
+                album: action.album,
+                loading: false,
+                finish: true
+            }
+        case FETCH_ALBUM_FAILED:
+            return {
+                ...state,
+                error: action.error,
+                loading: false,
+                finish: true
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}

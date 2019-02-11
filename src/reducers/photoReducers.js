@@ -7,15 +7,14 @@ import {
     FETCH_PHOTO_FAILED,
 } from '../actions/photoActions'
 
-
-let initialStatePhoto = {
+let initialStatePhotos = {
     loading: false,
     finish: false,
     photos: [],
     error: ''
 };
 
-const photoReducer = (state = initialStatePhoto, action) => {
+export const photosReducer = (state = initialStatePhotos, action) => {
     switch (action.type) {
         case FETCH_PHOTOS:
             return {
@@ -43,4 +42,37 @@ const photoReducer = (state = initialStatePhoto, action) => {
     }
 }
 
-export default photoReducer
+let initialStatePhoto = {
+    loading: false,
+    finish: false,
+    photo: {},
+    error: ''
+};
+
+export const photoReducer = (state = initialStatePhoto, action) => {
+    switch (action.type) {
+        case FETCH_PHOTO:
+            return {
+                ...state,
+                loading: true,
+            }
+        case FETCH_PHOTO_SUCCESS:
+            return {
+                ...state,
+                photo: action.photo,
+                loading: false,
+                finish: true
+            }
+        case FETCH_PHOTO_FAILED:
+            return {
+                ...state,
+                error: action.error,
+                loading: false,
+                finish: true
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}
