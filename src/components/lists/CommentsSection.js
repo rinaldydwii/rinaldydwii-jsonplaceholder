@@ -4,7 +4,7 @@ import CommentForm from "../comment/CommentForm";
 import Loading from "../Loading";
 import Container from "../Container";
 
-const CommentsSection = ({comments, loading, finish, error, onSubmitComment, onDeleteComment}) => (
+const CommentsSection = ({comments, loading, finish, error, onSubmitComment, postId}) => (
     <section>
         <h2 className="text-center">Comments</h2>
         <Loading
@@ -16,7 +16,7 @@ const CommentsSection = ({comments, loading, finish, error, onSubmitComment, onD
                 { comments ? (
                     <div className="list">
                         { comments.map((comment, index) => (
-                                <CommentItem comment={comment} key={comment.id} onDeleteComment={() => onDeleteComment(comment.id, index)} />
+                                <CommentItem comment={comment} key={comment.id} index={index} postId={postId} />
                             ))
                         }
                     </div>
