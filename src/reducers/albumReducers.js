@@ -25,7 +25,7 @@ export const albumsReducer = (state = initialStateAlbums, action) => {
         case FETCH_ALBUMS_SUCCESS:
             return {
                 ...state,
-                albums: [...state.albums, ...action.albums],
+                albums: action.albums,
                 loading: false,
                 finish: true
             }

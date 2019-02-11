@@ -24,7 +24,7 @@ export const photosReducer = (state = initialStatePhotos, action) => {
         case FETCH_PHOTOS_SUCCESS:
             return {
                 ...state,
-                photos: [...state.photos, ...action.photos],
+                photos: action.photos,
                 loading: false,
                 finish: true
             }

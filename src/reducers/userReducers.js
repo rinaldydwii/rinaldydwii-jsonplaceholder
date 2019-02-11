@@ -24,7 +24,7 @@ export const usersReducer = (state = initialStateUsers, action) => {
         case FETCH_USERS_SUCCESS:
             return {
                 ...state,
-                users: [...state.users, ...action.users],
+                users: action.users,
                 loading: false,
                 finish: true
             }
