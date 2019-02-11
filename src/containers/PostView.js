@@ -2,49 +2,20 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Container, CommentsSection, Loading } from "../components";
 import { fetchPost } from "../actions/postActions";
-import { fetchCommentsById } from "../actions/commentActions";
+import { fetchCommentsById, createComment } from "../actions/commentActions";
 
 class PostView extends Component {
-    editComment = (id, event) => {
-        event.preventDefault()
-        event.persist()
-        fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                postId: this.props.match.params.id,
-                name: event.target.name.value,
-                email: event.target.email.value,
-                body: event.target.body.value,
-            })
+    createComment = (e) => {
+        e.preventDefault()
+        e.persist()
+        this.props.createComment({
+            name: e.target.name.value,
+            email: e.target.email.value,
+            body: e.target.body.value,
+            postId: this.props.post.id
         })
-            .then(res => res.json())
-            .then(comment => {
-                const comments = this.state.comments
-                comments.map(item => {
-                    if (comment.id === item.id)
-                        return comment
-                    return item
-                })
-                this.setState({comments})
-                event.target.reset()
-            })
-            .catch(errorComments => this.setState({errorComments}))
-    }
-    deleteComment = (id, index) => {
-        fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {
-            method: "DELETE"
-        })
-            .then(res => res.json())
-            .then(_ => {
-                const comments = this.state.comments
-                comments.splice(index, 1)
-                this.setState({comments})
-            })
-            .catch(errorComments => this.setState({errorComments}))
-    }
+        e.target.reset()
+    } 
     componentDidMount() {
         const postId = this.props.match.params.id
         this.props.getPost(postId)
@@ -74,6 +45,8 @@ class PostView extends Component {
                         loading={this.props.loadingComments}
                         finish={this.props.finishComments}
                         error={this.props.errorComments}
+                        onSubmitComment={this.createComment}
+                        postId={post.id}
                     />
                 </Loading>
             </Container>
@@ -94,6 +67,7 @@ const mapStateToProps = state => ({
   
 const mapDispatchToProps = (dispatch) => ({
     getPost: (id) => dispatch(fetchPost(id)),
-    getComments: (id) => dispatch(fetchCommentsById(id))
+    getComments: (id) => dispatch(fetchCommentsById(id)),
+    createComment: (data) => dispatch(createComment(data))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PostView);
