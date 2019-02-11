@@ -1,3 +1,25 @@
+# Description
+by Rinaldy Dwi Istanto
+
+Aplikasi ini terdapat 5 menu:
+1. Home: Menampilkan semua user, post, album dan photo
+2. User: Menampilkan semua user
+3. Post: Menampilkan semua post
+4. Album: Menampilkan semua album
+5. Photo: Menampilkan semua user
+6. User Detail: Menampilkan detail user dengan semua post dan album user tersebut
+7. Post detail: Menampilkan detail post dengan semua comment post tersebut 
+8. Album detail: Menampilkan detail album dengan semua photo album tersebut
+9. Photo detail: Menampilkan detail photo
+10. Tambah Post: Membuat post baru, menu ini terdapat pada halaman User Detail
+11. Edit Post: Mengubah isi post, menu ini terdapat pada halaman Post Detail
+12. Delete Post: Menghapus post
+13. Tambah Comment: Membuat comment baru, menu ini terdapat pada halaman Post Detail di bagian bawah
+14. Edit Comment: mengubah isi comment, menu ini terdapat pada halaman Post Detail di setiap comment
+15. Delete Comment: Menghapus comment
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
