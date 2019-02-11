@@ -45,7 +45,7 @@ export const usersReducer = (state = initialStateUsers, action) => {
 let initialStateUser = {
     loading: false,
     finish: false,
-    users: {},
+    user: {},
     error: ''
 };
 
@@ -59,7 +59,7 @@ export const userReducer = (state = initialStateUser, action) => {
         case FETCH_USER_SUCCESS:
             return {
                 ...state,
-                users: action.users,
+                user: action.user,
                 loading: false,
                 finish: true
             }
