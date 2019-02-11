@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom"
 import { Container, CommentsSection, Loading } from "../components";
-import { fetchPost } from "../actions/postActions";
+import { fetchPost, deletePost } from "../actions/postActions";
 import { fetchCommentsById, createComment } from "../actions/commentActions";
 
 class PostView extends Component {
@@ -15,7 +16,11 @@ class PostView extends Component {
             postId: this.props.post.id
         })
         e.target.reset()
-    } 
+    }
+    deletePost = () => {
+        this.props.deletePost(this.props.post.id)
+        this.props.history.goBack()
+    }
     componentDidMount() {
         const postId = this.props.match.params.id
         this.props.getPost(postId)
@@ -33,6 +38,10 @@ class PostView extends Component {
                     <div className="post">
                         <header>
                             <h1 className="text-center">{post.title}</h1>
+                            <div className="text-center">
+                                <button className="button button__action" ><Link to={`/posts/${post.id}/edit`}>Edit</Link></button>
+                                <button className="button button__action" onClick={this.deletePost}>Delete</button>
+                            </div>
                         </header>
                         <article>
                             <Container small>
@@ -63,10 +72,12 @@ const mapStateToProps = state => ({
     loadingComments: state.commentsReducer.loading,
     finishComments: state.commentsReducer.finish,
     errorComments: state.commentsReducer.error,
+    finishPosts: state.postsReducer.finish
 })
   
 const mapDispatchToProps = (dispatch) => ({
     getPost: (id) => dispatch(fetchPost(id)),
+    deletePost: (id) => dispatch(deletePost(id)),
     getComments: (id) => dispatch(fetchCommentsById(id)),
     createComment: (data) => dispatch(createComment(data))
 })
