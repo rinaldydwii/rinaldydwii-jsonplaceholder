@@ -35,17 +35,13 @@ class UserView extends Component {
                             loading={this.props.loadingPosts}
                             finish={this.props.finishPosts}
                             error={this.props.errorPosts}
-                            // onLoadPosts={this.loadPosts}
-                            // paginate={this.state.pagePosts ? true : false}
-                            // action
+                            addButton
                         />
                         <AlbumsSection 
                             albums={this.props.albums}
                             loading={this.props.loadingAlbums}
                             finish={this.props.finishAlbums}
                             error={this.props.errorAlbums}
-                            // onLoadAlbums={this.loadAlbums}
-                            // paginate={this.state.pageAlbums ? true : false}
                         />
                     </Loading>
                 </div>
