@@ -4,7 +4,7 @@ import CommentForm from "../comment/CommentForm";
 import Loading from "../Loading";
 import Container from "../Container";
 
-const CommentsSection = ({comments, loading, finish, error}) => (
+const CommentsSection = ({comments, loading, finish, error, onSubmitComment, onDeleteComment}) => (
     <section>
         <h2 className="text-center">Comments</h2>
         <Loading
@@ -15,13 +15,13 @@ const CommentsSection = ({comments, loading, finish, error}) => (
             <Container small>
                 { comments ? (
                     <div className="list">
-                        { comments.map(comment => (
-                                <CommentItem comment={comment} key={comment.id} />
+                        { comments.map((comment, index) => (
+                                <CommentItem comment={comment} key={comment.id} onDeleteComment={() => onDeleteComment(comment.id, index)} />
                             ))
                         }
                     </div>
                 ) : <div>Comments not found!</div>}
-                <CommentForm />
+                <CommentForm onSubmitComment={onSubmitComment} />
             </Container>
         </Loading>
     </section>
