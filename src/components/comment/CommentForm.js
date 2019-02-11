@@ -7,7 +7,7 @@ const CommentForm = ({onSubmitComment, value = null, title = "Comment", onChange
                 placeholder="Name" 
                 name="name" 
                 value={value ? value.name : ""} 
-                onChange={(e) => onChange ? onChange.name(e) : null} 
+                onChange={onChange ? onChange.name : null} 
                 type="text" 
             />
         </div>
