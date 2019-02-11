@@ -1,17 +1,35 @@
 import React from "react";
 
-const CommentForm = ({onSubmitComment}) => (
-    <form className="form text-center" onSubmit={onSubmitComment}>
+const CommentForm = ({onSubmitComment, value = null, title = "Comment", onChange}) => (
+    <form className="form text-center" onSubmit={onSubmitComment} >
         <div className="form__row">
-            <input placeholder="Name" name="name" type="text" />
+            <input 
+                placeholder="Name" 
+                name="name" 
+                value={value ? value.name : ""} 
+                onChange={(e) => onChange ? onChange.name(e) : null} 
+                type="text" 
+            />
         </div>
         <div className="form__row">
-            <input placeholder="Email" name="email" type="email" />
+            <input 
+                placeholder="Email" 
+                name="email" 
+                value={value ? value.email : ""} 
+                onChange={onChange ? onChange.email : null} 
+                type="email" 
+            />
         </div>
         <div className="form__row">
-            <textarea placeholder="Type comment here..." name="body"></textarea>
+            <textarea 
+                placeholder="Type comment here..." 
+                name="body"
+                value={value ? value.body : ""} 
+                onChange={onChange ? onChange.body : null} 
+            ></textarea>
         </div>
-        <button className="button">Submit</button>
+        <button className="button">{title}</button>
     </form>
 )
-export default CommentForm;
+
+export default CommentForm
