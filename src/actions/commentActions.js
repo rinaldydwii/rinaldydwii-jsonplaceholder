@@ -14,9 +14,10 @@ export const DELETE_COMMENT = "DELETE_COMMENT"
 export const DELETE_COMMENT_SUCCESS = "DELETE_COMMENT_SUCCESS"
 export const DELETE_COMMENT_FAILED = "DELETE_COMMENT_FAILED"
 
-function requestFetchComments() {
+function requestFetchCommentsById(postId) {
     return {
         type: FETCH_COMMENTS,
+        postId
     }
 }
 function successFetchComments(comments) {
@@ -86,10 +87,10 @@ function failureDeleteComment(error) {
     }
 }
 
-export function fetchComments(){
+export function fetchCommentsById(id){
     return dispatch => {
-        dispatch(requestFetchComments())
-        axios.get(apiUrl.comments)
+        dispatch(requestFetchCommentsById(id))
+        axios.get(`${apiUrl.comments}?postId=${id}`)
 			.then(response => dispatch(successFetchComments(response.data)))
 			.catch(_ => dispatch(failureFetchComments("Fetch comments failed!")))
     }
