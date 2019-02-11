@@ -1,9 +1,9 @@
 import axios from "axios"
 import { apiUrl } from "../config/apiUrl";
 
-export const FETCH_COMMENTS = "FETCH_COMMENTS"
-export const FETCH_COMMENTS_SUCCESS = "FETCH_COMMENTS_SUCCESS"
-export const FETCH_COMMENTS_FAILED = "FETCH_COMMENTS_FAILED"
+export const FETCH_COMMENTS_BY_ID = "FETCH_COMMENTS_BY_ID"
+export const FETCH_COMMENTS_BY_ID_SUCCESS = "FETCH_COMMENTS_BY_ID_SUCCESS"
+export const FETCH_COMMENTS_BY_ID_FAILED = "FETCH_COMMENTS_BY_ID_FAILED"
 export const CREATE_COMMENT = "CREATE_COMMENT"
 export const CREATE_COMMENT_SUCCESS = "CREATE_COMMENT_SUCCESS"
 export const CREATE_COMMENT_FAILED = "CREATE_COMMENT_FAILED"
@@ -16,19 +16,19 @@ export const DELETE_COMMENT_FAILED = "DELETE_COMMENT_FAILED"
 
 function requestFetchCommentsById(postId) {
     return {
-        type: FETCH_COMMENTS,
+        type: FETCH_COMMENTS_BY_ID,
         postId
     }
 }
 function successFetchComments(comments) {
     return {
-        type: FETCH_COMMENTS_SUCCESS,
+        type: FETCH_COMMENTS_BY_ID_SUCCESS,
         comments
     }
 }
 function failureFetchComments(error) {
     return {
-        type: FETCH_COMMENTS_FAILED,
+        type: FETCH_COMMENTS_BY_ID_FAILED,
         error
     }
 }
@@ -69,13 +69,14 @@ function failureUpdateComment(error) {
         error
     }
 }
-function requestDeleteComment(id) {
+function requestDeleteComment(id, index) {
     return {
         type: DELETE_COMMENT,
         id,
+        index
     }
 }
-function successDeleteComment(comment) {
+function successDeleteComment() {
     return {
         type: DELETE_COMMENT_SUCCESS,
     }
@@ -99,7 +100,7 @@ export function fetchCommentsById(id){
 export function createComment(data){
     return dispatch => {
         dispatch(requestCreateComment(data))
-        axios.post(apiUrl.comments,data)
+        axios.post(apiUrl.comments, data)
 			.then(response => dispatch(successCreateComment(response.data)))
 			.catch(_ => dispatch(failureCreateComment("Create comment failed!")))
     }
@@ -114,9 +115,9 @@ export function updateComment(id, data){
     }
 }
 
-export function deleteComment(id){
+export function deleteComment(id, index){
     return dispatch => {
-        dispatch(requestDeleteComment(id ))
+        dispatch(requestDeleteComment(id, index))
         axios.delete(`${apiUrl.comments}/${id}`)
 			.then(response => dispatch(successDeleteComment(response.data)))
 			.catch(_ => dispatch(failureDeleteComment("Delete comment failed!")))
