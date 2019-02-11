@@ -8,6 +8,8 @@ import AlbumsView from "../containers/AlbumsView";
 import PostsView from "../containers/PostsView";
 import HomeView from "../containers/HomeView";
 import Error404View from "../containers/Error404View";
+import EditPostView from "../containers/EditPostView";
+import AddPostView from "../containers/AddPostView";
 
 export const routes = [
     {
@@ -34,6 +36,16 @@ export const routes = [
         exact: true,
         path: "/posts/:id",
         component: PostView
+    },
+    {
+        exact: true,
+        path: "/posts/:id/add",
+        component: AddPostView
+    },
+    {
+        exact: true,
+        path: "/posts/:id/edit",
+        component: EditPostView
     },
     {
         exact: true,
